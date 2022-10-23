@@ -1,0 +1,17 @@
+{
+  "[html][css][json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#272F2E",
+    "titleBar.activeBackground": "#374241",
+    "titleBar.activeForeground": "#FAFBFB"
+  }
+}
