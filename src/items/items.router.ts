@@ -5,7 +5,10 @@
 import express, { Request, Response } from 'express';
 import * as ItemService from './items.service';
 import { BaseItem, Item } from './item.interface';
+import { ItemPermissions } from './item-permissions';
+
 import { checkJwt } from '../middleware/authz.middleware';
+import { checkPermissions } from '../middleware/permissions.middleware';
 
 /**
  * Router Definition
@@ -45,7 +48,7 @@ itemsRouter.get('/:id', async (req: Request, res: Response) => {
 itemsRouter.use(checkJwt);
 
 // POST items
-itemsRouter.post('/', async (req: Request, res: Response) => {
+itemsRouter.post('/', checkPermissions([ItemPermissions.CreateItems]), async (req: Request, res: Response) => {
   try {
     const item: BaseItem = req.body;
     const newItem = await ItemService.create(item);
@@ -56,7 +59,7 @@ itemsRouter.post('/', async (req: Request, res: Response) => {
 });
 
 // PUT items/:id
-itemsRouter.put('/:id', async (req: Request, res: Response) => {
+itemsRouter.put('/:id', checkPermissions([ItemPermissions.UpdateItems]), async (req: Request, res: Response) => {
   const id: number = parseInt(req.params.id, 10);
   try {
     const itemUpdate: Item = req.body;
@@ -74,7 +77,7 @@ itemsRouter.put('/:id', async (req: Request, res: Response) => {
 
 // DELETE items/:id
 
-itemsRouter.delete('/:id', async (req: Request, res: Response) => {
+itemsRouter.delete('/:id', checkPermissions([ItemPermissions.DeleteItems]), async (req: Request, res: Response) => {
   try {
     const id: number = parseInt(req.params.id, 10);
     await ItemService.remove(id);
